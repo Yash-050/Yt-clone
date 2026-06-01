@@ -1,0 +1,16 @@
+{
+  "name": "ytclone",
+  "version": "1.0.0",
+  "description": "A youtube clone to learn about backend",
+  "keywords": [
+    "Javascript",
+    "backend"
+  ],
+  "license": "ISC",
+  "author": "Yash",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
