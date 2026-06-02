@@ -2,15 +2,18 @@
   "name": "ytclone",
   "version": "1.0.0",
   "description": "A youtube clone to learn about backend",
+  "type": "module",
   "keywords": [
     "Javascript",
     "backend"
   ],
   "license": "ISC",
   "author": "Yash",
-  "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/index.js"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3"
   }
 }
