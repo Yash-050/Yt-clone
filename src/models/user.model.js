@@ -73,7 +73,7 @@ userSchema.methods.generateREFRESHstoken = function(){
         username:this.username,
         fullname:this.fullname 
     },
-process.env.REFRESH_TOKEN_SECRET:{
+process.env.REFRESH_TOKEN_SECRET:{ 
     expiresIn:process.env.REFRESH_TOKEN_EXPIRY
 })
 }
