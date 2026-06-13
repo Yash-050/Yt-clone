@@ -46,35 +46,39 @@ const userSchema = new Schema({
 
 },{timestamps:true})
 
-userSchema.pre("save  ",async function(next){//it is  aplug in which will alaways add password bef 
+userSchema.pre("save",async function(next){//it is  aplug in which will alaways add password bef 
     if(!this.isModified("password"))return next()//checking if this not modified than next 
-    this.password = bcrypt.hash(this.password,10)
+    this.password = await bcrypt.hash(this.password,10)
     next()
 })
-
+//comparing the password 
 userSchema.methods.ispassword = async function (password) {//ceating our own method for checking if the password is coorest
     return await bcrypt.compare(password,this.password)
 }
+
+//maintaing the genrate access token  
 userSchema.methods.generateAccesstoken = function(){
-    jwt.sign({
+    return jwt.sign({
         _id:this._id,
         email:this.email,
         username:this.username,
         fullname:this.fullname 
     },
-process.env.ACCESS_TOKEN_SECRET:{
-    expiresIn:process.env.ACCESS_TOKEN_EXPIRY
-})
+    process.env.ACCESS_TOKEN_SECRET,
+    {
+        expiresIn:process.env.ACCESS_TOKEN_EXPIRY
+    })
 }
 userSchema.methods.generateREFRESHstoken = function(){
-    jwt.sign({
+    return jwt.sign({
         _id:this._id,
         email:this.email,
         username:this.username,
         fullname:this.fullname 
     },
-process.env.REFRESH_TOKEN_SECRET:{ 
-    expiresIn:process.env.REFRESH_TOKEN_EXPIRY
-})
+    process.env.REFRESH_TOKEN_SECRET,
+    {
+        expiresIn:process.env.REFRESH_TOKEN_EXPIRY
+    })
 }
-export const user = mongoose.model("user, userSchema")
+export const user = mongoose.model("user", userSchema)
