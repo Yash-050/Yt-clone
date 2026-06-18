@@ -30,10 +30,10 @@ const userSchema = new Schema({
         required:true
     },
     coverimage:{
-        type:true
+        type:String
     },
     watchhistory:{
-        type:Schema.mongoose.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"vedio"
     },
     password:{

@@ -9,7 +9,7 @@ router.route("/register").post(
     //this new part and we are only using it to take input as a image and other file
     { name: "avatar", maxCount: 1 },
     {
-      name: "coverImage",
+      name: "coverimage",
       maxCount: 1,
     },
   ]),

@@ -16,6 +16,7 @@ const uploadClooudinary = async(loacalpath)=>{
         })
         //file uploaded sucessfully
         console.log("upload sucessful",response.url);
+        fs.unlinkSync(localFilePath);
         return response;
     } catch (error) {
         fs.unlinkSync(loacalpath)// remove the locally saved temproroy fileas operation failed 
