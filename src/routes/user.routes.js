@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { registerUser } from "../controllers/user.controller.js";
+import { loginuser, logoutuser, registerUser } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { verifyjwt } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 //asking the to do the work part when called
@@ -15,4 +16,8 @@ router.route("/register").post(
   ]),
   registerUser
 );
+
+router.route("/login").post(loginuser)
+//secured routes
+router.route("/logout").post(verifyjwt,logoutuser)//it means the middleware will verify if the user exist and if then log him out and it uses verifyjwt first and logout just after it 
 export default router;
