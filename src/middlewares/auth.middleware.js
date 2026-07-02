@@ -1,9 +1,9 @@
 // Middleware ka kaam hai check karna:
 // "Kya request bhejne wala user login hai ya nahi?"
 
-import { user } from "../models/user.model";
-import { ApiError } from "../utils/Apierror";
-import { asyncHandler } from "../utils/asyncHandler";
+import { user } from "../models/user.model.js";
+import { ApiError } from "../utils/Apierror.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 
 export const verifyjwt = asyncHandler(async (req, res, next) => {

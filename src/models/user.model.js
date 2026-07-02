@@ -47,7 +47,7 @@ const userSchema = new Schema({
 },{timestamps:true})
 
 userSchema.pre("save",async function(next){//it is  aplug in which will alaways add password bef 
-    if(!this.isModified("password"))return next()//checking if this not modified than next 
+    if(!this.isModified("password"))return //checking if this not modified than next 
     this.password = await bcrypt.hash(this.password,10)
 })
 //comparing the password 

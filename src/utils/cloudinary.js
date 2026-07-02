@@ -7,6 +7,7 @@ cloudinary.config({
     api_secret:process.env.CLOUDINARY_API_SECRET
 });
 
+
 const uploadClooudinary = async(loacalpath)=>{
     try {
         if(!loacalpath)return null
