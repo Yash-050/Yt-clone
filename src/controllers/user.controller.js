@@ -5,6 +5,7 @@ import { uploadClooudinary } from "../utils/cloudinary.js";
 import { Apiresponse } from "../utils/Apiresponse.js";
 import jwt from "jsonwebtoken";
 import { subscription } from "../models/subscription.model.js";
+import mongoose from "mongoose";
 
 const registerUser = asyncHandler(async (req, res) => {
   //async handler is like a wrapper which will make sure controlller when through error can be daeled
@@ -378,6 +379,73 @@ const updateusercoverimg = asyncHandler(async (req, res) => {
     
   });
   console.log(getuserchannelprofile)
+/*1. Match the logged-in user by _id
+   → gives you the User document
+
+2. Lookup "videos" collection using user's watchHistory array of video IDs
+   → for each video id in watchHistory, find matching video doc
+   → nested pipeline (sub-lookup) on each video: lookup its owner (User)
+     → project only the fields you want from owner (username, avatar, fullName)
+     → addFields to unwrap owner array → owner object (since lookup always returns array)
+
+3. Return watchHistory field of the resulting user doc as response*/
+
+
+  const getWatchHistory = asyncHandler(async (req, res) => {
+  const user = await User.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(req.user._id) // string -> mongo ObjectId
+      }
+    },
+    {
+      $lookup: {
+        from: "videos",
+        localField: "watchHistory",
+        foreignField: "_id",
+        as: "watchHistory",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              localField: "owner",
+              foreignField: "_id",
+              as: "owner",
+              pipeline: [
+                {
+                  $project: {
+                    fullName: 1,
+                    username: 1,
+                    avatar: 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            $addFields: {
+              owner: {
+                $first: "$owner" // owner comes as an array from lookup, take first element
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]);
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        user[0].watchHistory,
+        "Watch history fetched successfully"
+      )
+    );
+});
+
+export { getWatchHistory };
 export {
   registerUser,
   loginuser,
